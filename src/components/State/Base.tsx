@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-function RunningStatus(processFn: Promise<{}> ){
-    const [status, setStatus] = useState({
-        isRunning: false,
-        isError: false,
-    })
+function RunningStatus(processFn: Promise<{}>) {
+  const [status, setStatus] = useState({
+    isRunning: false,
+    isError: false
+  });
 
-    useEffect(() => {
-
-    })
+  useEffect(() => {});
 }
