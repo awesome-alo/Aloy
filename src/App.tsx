@@ -2,16 +2,17 @@ import React from "react";
 import Home from "./components/Home/App";
 import AppBar from "./components/AppBar/App";
 import "./App.css";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 class App extends React.Component {
   render() {
     return (
-      <div className="global-layout">
-        <AppBar />
-        <div>
-          <Home />
+      <Router>
+        <div className="global-layout">
+          <AppBar />
+          <Route path="/" exact component={Home} />
         </div>
-      </div>
+      </Router>
     );
   }
 }
