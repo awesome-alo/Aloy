@@ -2,46 +2,40 @@ import React, { ChangeEvent } from "react";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { createStyles } from "@material-ui/core/styles";
-import Preview from "./Preview";
+import Preview from "../Preview/App";
 
-// MimeType, ref to https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types
-enum AllowedMimeType {
-  AVI = "video/x-msvideo",
-  MPEG = "video/mpeg",
-  OGG = "video/ogg",
-  WEBM = "video/webm",
-  JPG = "image/jpeg",
-  GIF = "image/gif",
-  PNG = "image/png"
+interface State {
+  selectedFile: File | null;
 }
 
-const style = createStyles({
-  uploadButton: {
-    marginTop: "20px"
-  },
-  rightIcon: {
-    marginLeft: "15px"
-  },
-  layout: {
-    textAlign: "center"
-  },
-  preview: {
-    marginTop: "30px"
-  },
-  fileInput: {
-    display: "none"
-  }
-});
-
-export default class extends React.Component {
+export default class extends React.Component<any, Readonly<State>> {
   private inputRef: React.RefObject<HTMLInputElement>;
+
+  private readonly style = createStyles({
+    uploadButton: {
+      marginTop: "20px"
+    },
+    rightIcon: {
+      marginLeft: "15px"
+    },
+    layout: {
+      textAlign: "center"
+    },
+    preview: {
+      marginTop: "30px"
+    },
+    fileInput: {
+      display: "none"
+    }
+  });
+
+  readonly state: State = {
+    selectedFile: null
+  };
 
   constructor(props: any) {
     super(props);
     this.inputRef = React.createRef();
-    this.state = {
-      selectedFile: null
-    };
   }
 
   handleButtonClick() {
@@ -56,44 +50,32 @@ export default class extends React.Component {
     if (files && files.length > 0) {
       const file = files[0];
       const type = file.type;
-      let allowed = false;
-      console.log(type);
-      for (let each in AllowedMimeType) {
-        if (type === AllowedMimeType[each]) {
-          allowed = true;
-          break;
-        }
-      }
-      if (allowed) {
-        this.setState({
-          selectedFile: file
-        });
-      } else {
-        // TODO: dispatch error message to global snackbar
-      }
+      this.setState({
+        selectedFile: file
+      });
     }
   }
 
   render() {
     return (
-      <div style={style.layout}>
+      <div style={this.style.layout}>
         <Button
           variant="contained"
           color="primary"
-          style={style.uploadButton}
+          style={this.style.uploadButton}
           onClick={this.handleButtonClick.bind(this)}
         >
           <input
             ref={this.inputRef}
             type="file"
-            style={style.fileInput}
+            style={this.style.fileInput}
             onChange={this.handleFileSelected.bind(this)}
           />
           Upload Video
-          <CloudUploadIcon style={style.rightIcon} />
+          <CloudUploadIcon style={this.style.rightIcon} />
         </Button>
-        <div style={style.preview}>
-          <Preview />
+        <div style={this.style.preview}>
+          <Preview selectedFile={this.state.selectedFile} />
         </div>
       </div>
     );
